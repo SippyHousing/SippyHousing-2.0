@@ -666,7 +666,7 @@ const AdminDashboard = () => {
         </Card>
 
         {/* Testimonials Section */}
-        <Card className="border-2 border-rose-200">
+        <Card className="border-2 border-red-500">
           <CardHeader>
             <div className="flex items-center space-x-2">
               <MessageSquare className="h-6 w-6 text-rose-600" />
@@ -680,7 +680,7 @@ const AdminDashboard = () => {
 
           <CardContent className="space-y-4">
             <Button
-              className="w-full bg-rose-600 hover:bg-rose-700"
+              className="w-full bg-red-600 hover:bg-red-300"
               onClick={handleViewTestimonials}
             >
               <Plus className="h-4 w-4 mr-2" />
@@ -699,7 +699,7 @@ const AdminDashboard = () => {
         </Card>
 
         {/* Website Settings Section */}
-        <Card className="border-2 border-slate-200">
+        <Card className="border-2 border-slate-300">
           <CardHeader>
             <div className="flex items-center space-x-2">
               <Settings className="h-6 w-6 text-slate-600" />

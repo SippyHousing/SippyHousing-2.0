@@ -238,7 +238,7 @@ const Apartments = ({ allProperties }: ApartmentsProps) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {displayedApartments.map(apartment => (
                 <div key={apartment.id} className="property-card">
-                  <div className="relative h-48">
+                  <div className="relative h-48"   onClick={() => handleViewDetails(apartment)}>
                     <Watermark link={apartment.image} />
                     <div className="absolute top-0 left-0 w-full p-2 z-10">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${apartment.type === 'premium' ? 'bg-sippy-gold text-white' : 'bg-white text-sippy-charcoal'}`}>

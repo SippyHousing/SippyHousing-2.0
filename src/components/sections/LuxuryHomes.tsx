@@ -136,7 +136,7 @@ const handleViewDetails = async (
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-gray-100"
             >
               {/* Image — NOT clickable for popup, just display */}
-              <div className="h-64 w-full overflow-hidden bg-gray-100">
+              <div className="h-64 w-full overflow-hidden bg-gray-100"  onClick={(e) => handleViewDetails(e, property)}>
                 <Watermark link={imagesMap[property.id] || "/placeholder.svg"} />
               </div>
 

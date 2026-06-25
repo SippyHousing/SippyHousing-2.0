@@ -1180,37 +1180,6 @@ const handleReviewSubmit = async (e) => {
       <TestimonialsSection />
 
      </section>
-   
-
-
-     
-        ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       {/* Testimonials */}
 {/* <section className="py-12 bg-white">

@@ -123,7 +123,8 @@ const NewProjects = ({ allProperties }: NewProjectsProps) => {
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-gray-100"
             >
               {/* Image */}
-              <div className="h-64 w-full overflow-hidden bg-gray-100">
+              <div className="h-64 w-full overflow-hidden bg-gray-100"  onClick={(e) => handleViewDetails(e, property)}>
+                
                 <Watermark link={imagesMap[property.id] || "/placeholder.svg"} />
               </div>
 
@@ -133,7 +134,7 @@ const NewProjects = ({ allProperties }: NewProjectsProps) => {
                   <span className="inline-flex items-center gap-1 bg-sippy-gold/10 text-sippy-gold
                     text-xs font-bold px-3 py-1 rounded-full border border-sippy-gold/30">
                     <Building2 className="h-3 w-3" />
-                    New Project
+                    New Project 
                   </span>
                 </div>
 
