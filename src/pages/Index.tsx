@@ -7,7 +7,7 @@ import LuxuryHomes from "@/components/sections/LuxuryHomes";
 import Apartments from "@/components/sections/Apartments";
 import InvestorSection from "@/components/sections/InvestorSection";
 import ResaleRent from "@/components/sections/ResaleRent";
-import InvestDubai from "@/components/sections/InvestDubai";
+// import InvestDubai from "@/components/sections/InvestDubai";
 import Contact from "@/components/sections/Contact";
 import AboutUs from "@/components/sections/AboutUs";
 import ComingSoon from "@/components/sections/ComingSoon";
@@ -46,8 +46,8 @@ const Index = () => {
       <main className="pt-20 lg:pt-24">
         <Hero />
         <JointVenture />
-        <NewProjects allProperties={allProperties} />
         <LuxuryHomes allProperties={allProperties} />
+         <NewProjects allProperties={allProperties} />
         <Apartments allProperties={allProperties} />
         <ResaleRent allProperties={allProperties} />
         <IndependentBuildings allProperties={allProperties} />
@@ -57,7 +57,7 @@ const Index = () => {
         <Hotels allProperties={allProperties} />
         <InvestorSection />
         <International allProperties={allProperties} />
-         <InvestDubai allProperties={allProperties} />
+         {/* <InvestDubai allProperties={allProperties} /> */}
         <AboutUs />
 
         {/* <InvestDubai allProperties={allProperties} /> */}

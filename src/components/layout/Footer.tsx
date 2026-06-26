@@ -307,7 +307,7 @@ const Footer = () => {
                <li><a href="#apartments" onClick={(e) => { e.preventDefault(); scrollToSection("#apartments"); }} className="text-gray-300 hover:text-sippy-gold transition-colors cursor-pointer">Apartments & Flats</a></li>
               <li><a href="#investor-section" onClick={(e) => { e.preventDefault(); scrollToSection("#investor-section"); }} className="text-gray-300 hover:text-sippy-gold transition-colors cursor-pointer">Investor Section</a></li>
                <li><a href="#resale-rent" onClick={(e) => { e.preventDefault(); scrollToSection("#resale-rent"); }} className="text-gray-300 hover:text-sippy-gold transition-colors cursor-pointer">Resale & Rent</a></li>
-              <li><a href="#invest-dubai" onClick={(e) => { e.preventDefault(); scrollToSection("#invest-dubai"); }} className="text-gray-300 hover:text-sippy-gold transition-colors cursor-pointer">Invest in Dubai</a></li>
+              {/* <li><a href="#invest-dubai" onClick={(e) => { e.preventDefault(); scrollToSection("#invest-dubai"); }} className="text-gray-300 hover:text-sippy-gold transition-colors cursor-pointer">Invest in Dubai</a></li> */}
              {/* <li><Link to="/about" className="text-gray-300 hover:text-sippy-gold transition-colors">About Us</Link></li> */}
             </ul>
            </div>
