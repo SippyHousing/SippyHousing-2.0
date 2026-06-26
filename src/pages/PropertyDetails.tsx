@@ -2589,7 +2589,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import Watermark from "@/components/sections/Watermark";
+import Watermark from "@/components/sections/watermarks";
 import { useCart } from "@/contexts/CartContext";
 import { handleHashNavigation } from "@/lib/navigation";
 import { Property } from "@/lib/supabase";
