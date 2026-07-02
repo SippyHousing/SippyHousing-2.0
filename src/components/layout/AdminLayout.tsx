@@ -20,7 +20,7 @@ const AdminLayout = ({ children, title = "Admin Dashboard" }: AdminLayoutProps) 
       title: "Logged out",
       description: "You have been successfully logged out",
     });
-    navigate("/admin/login");
+    navigate("/");
   };
 
   return (
