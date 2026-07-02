@@ -133,6 +133,8 @@ import TeamManagement from "./pages/TeamManagement";
 import Leads from "./pages/VisitorLeads";
 import TestimonialsAdmin from "./pages/TestimonialsAdmin"
 import WebsiteSettings from "./pages/WebSiteSetting";
+import Propertyorder from "./pages/property-order";
+import PropertyOrderPage from "./pages/property-order";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -215,6 +217,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <WebsiteSettings />
+                </ProtectedRoute>
+              }
+            />
+             <Route
+              path="/admin/property-order"
+              element={
+                <ProtectedRoute>
+                  <PropertyOrderPage />
                 </ProtectedRoute>
               }
             />

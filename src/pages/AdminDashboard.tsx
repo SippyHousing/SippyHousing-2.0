@@ -348,6 +348,7 @@
 
 
 import { useNavigate } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AdminLayout from "@/components/layout/AdminLayout";
@@ -362,8 +363,10 @@ import {
   UserCheck,
   Phone,
   MessageSquare,
-  Settings
+  Settings,
+  ArrowUpDown 
 } from "lucide-react";
+ 
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -384,6 +387,11 @@ const AdminDashboard = () => {
   const handleViewSettings = () => {
     navigate("/admin/settings");
   };
+ // if using react-router
+
+const handleViewPropertyOrder = () => {
+  navigate("/admin/property-order");
+};
   return (
     <AdminLayout title="Welcome to Admin Dashboard">
       <div className="mb-8">
@@ -721,6 +729,32 @@ const AdminDashboard = () => {
             </Button>
           </CardContent>
         </Card>
+
+
+
+        {/* Property Order Section */}
+<Card className="border-2 border-slate-300">
+  <CardHeader>
+    <div className="flex items-center space-x-2">
+      <ArrowUpDown className="h-6 w-6 text-slate-600" />
+      <CardTitle className="text-lg">Property Category Order</CardTitle>
+    </div>
+
+    <CardDescription>
+      Change the display order of property categories on homepage (New Projects, Ultra Luxury, Plots, etc.)
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="space-y-4">
+    <Button
+      className="w-full bg-slate-600 hover:bg-slate-700"
+      onClick={handleViewPropertyOrder}
+    >
+      <ArrowUpDown className="h-4 w-4 mr-2" />
+      Manage Order
+    </Button>
+  </CardContent>
+</Card>
       </div>
 
       {/* Quick Actions */}
