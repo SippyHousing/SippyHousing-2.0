@@ -40,6 +40,11 @@ const Watermark = ({
             alt="Property"
             className="max-w-[90%] max-h-[90%] rounded-lg"
           />
+           <img
+          src="/watermark.png"
+          alt="watermark"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none z-50"
+        />
 
           <button
             className="absolute top-5 right-5 bg-white px-3 py-1 rounded"

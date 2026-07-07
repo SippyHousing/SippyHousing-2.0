@@ -1,3 +1,4 @@
+
 // import { useEffect, useRef, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@
 // import { propertyService, PropertyImage } from "@/services/propertyService";
 // import { Property } from "@/lib/supabase";
 // import { formatPriceWithCommas } from "@/lib/utils";
+// import { Input } from "@/components/ui/input"; // Ensure you have this shadcn UI input component
 // import {
 //   AlertDialog,
 //   AlertDialogAction,
@@ -24,8 +26,6 @@
 //   Building2, 
 //   Home, 
 //   MapPin, 
-//   Bed, 
-//   Bath, 
 //   Square, 
 //   IndianRupee,
 //   Loader2,
@@ -35,9 +35,10 @@
 //   Key,
 //   Calendar,
 //   Phone,
-//   Hash,
 //   Plus,
-//   AlertTriangle
+//   AlertTriangle,
+//   Search, // Added Search Icon
+//   X // Added Clear Icon
 // } from "lucide-react";
 
 // const AllProperties = () => {
@@ -47,6 +48,7 @@
 //   const [propertyImages, setPropertyImages] = useState<Record<string, PropertyImage[]>>({});
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState<string | null>(null);
+//   const [searchQuery, setSearchQuery] = useState(""); // Added Search State
 //   const imagesRequestRef = useRef(0);
 
 //   useEffect(() => {
@@ -65,7 +67,6 @@
 //       setPropertyImages({});
 //       const data = await propertyService.getAllProperties();
 //       setProperties(data);
-//       // Render list immediately; images continue loading in background.
 //       setLoading(false);
 
 //       data.forEach((property) => {
@@ -90,7 +91,6 @@
 //         variant: "destructive",
 //       });
 //     } finally {
-//       // Keep this as a safety net for error paths.
 //       setLoading(false);
 //     }
 //   };
@@ -132,6 +132,8 @@
 //     }
 //   };
 
+
+  
 //   const formatDate = (dateString?: string) => {
 //     if (!dateString) return 'Not specified';
 //     return new Date(dateString).toLocaleDateString('en-IN');
@@ -146,7 +148,6 @@
 //         description: `${propertyName} has been deleted successfully!`,
 //       });
       
-//       // Refresh the properties list
 //       fetchProperties();
 //     } catch (error) {
 //       const errorMessage = error instanceof Error ? error.message : 'Failed to delete property';
@@ -157,6 +158,21 @@
 //       });
 //     }
 //   };
+
+//   // Filter properties based on the search input string
+//   const filteredProperties = properties.filter((property) => {
+//     const query = searchQuery.toLowerCase().trim();
+//     if (!query) return true;
+
+//     return (
+//       property.building?.toLowerCase().includes(query) ||
+//       property.property_type?.toLowerCase().includes(query) ||
+//       property.usage_type?.toLowerCase().includes(query) ||
+//       property.location?.toLowerCase().includes(query) ||
+//       property.builder?.toLowerCase().includes(query) ||
+//       (property as any).property_code?.toLowerCase().includes(query) // Adjust field if key matches exact database schema name
+//     );
+//   });
 
 //   if (loading) {
 //     return (
@@ -194,32 +210,57 @@
 //           Back to Dashboard
 //         </Button>
         
-//                   <div className="flex justify-between items-center">
-//             <div>
-//               <h2 className="text-2xl font-bold text-gray-900">All Properties</h2>
-//               <p className="text-gray-600">Manage and view all your property listings</p>
+//         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+//           <div>
+//             <h2 className="text-2xl font-bold text-gray-900">All Properties</h2>
+//             <p className="text-gray-600">Manage and view all your property listings</p>
+//           </div>
+
+//           {/* New Search Input Layout Wrapper */}
+//           <div className="flex flex-col sm:flex-row w-full md:w-auto items-center gap-2">
+//             <div className="relative w-full sm:w-80">
+//               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+//               <Input
+//                 type="text"
+//                 placeholder="Search by name, category, or code..."
+//                 value={searchQuery}
+//                 onChange={(e) => setSearchQuery(e.target.value)}
+//                 className="pl-9 pr-8"
+//               />
+//               {searchQuery && (
+//                 <button 
+//                   onClick={() => setSearchQuery("")}
+//                   className="absolute right-2.5 top-3 text-gray-400 hover:text-gray-600"
+//                 >
+//                   <X className="h-3.5 w-3.5" />
+//                 </button>
+//               )}
 //             </div>
-//             <div className="flex space-x-2">
-//               <Button variant="outline" onClick={() => navigate("/admin/add-property")}>
+
+//             <div className="flex space-x-2 w-full sm:w-auto justify-end">
+//               <Button variant="outline" onClick={() => navigate("/admin/add-property")} className="flex-1 sm:flex-initial">
 //                 <Plus className="h-4 w-4 mr-2" />
 //                 Add Property
 //               </Button>
-//               <Button onClick={fetchProperties}>
+//               <Button onClick={fetchProperties} className="flex-1 sm:flex-initial">
 //                 <Eye className="h-4 w-4 mr-2" />
 //                 Refresh
 //               </Button>
 //             </div>
 //           </div>
+//         </div>
 //       </div>
 
-//        {/* Summary */}
-//        {properties.length > 0 && (
+//       {/* Summary */}
+//       {filteredProperties.length > 0 && (
 //         <Card className="mt-8 mb-8">
 //           <CardContent className="pt-6">
 //             <div className="flex justify-between items-center">
 //               <div>
 //                 <p className="text-sm text-gray-600">Total Properties</p>
-//                 <p className="text-2xl font-bold">{properties.length}</p>
+//                 <p className="text-2xl font-bold">
+//                   {searchQuery ? `${filteredProperties.length} found (of ${properties.length})` : properties.length}
+//                 </p>
 //               </div>
 //               <div className="text-right">
 //                 <p className="text-sm text-gray-600">Last Updated</p>
@@ -232,22 +273,31 @@
 //         </Card>
 //       )}
 
-//       {properties.length === 0 ? (
+//       {filteredProperties.length === 0 ? (
 //         <Card>
 //           <CardContent className="flex flex-col items-center justify-center py-12">
 //             <Building2 className="h-12 w-12 text-gray-400 mb-4" />
 //             <h3 className="text-lg font-semibold text-gray-900 mb-2">No Properties Found</h3>
 //             <p className="text-gray-600 text-center mb-4">
-//               You haven't added any properties yet. Start by adding your first property.
+//               {searchQuery 
+//                 ? "No properties match your current search parameters. Try clearing your search query." 
+//                 : "You haven't added any properties yet. Start by adding your first property."}
 //             </p>
-//             <Button onClick={() => navigate("/admin")}>
-//               Add New Property
-//             </Button>
+//             {!searchQuery ? (
+//               <Button onClick={() => navigate("/admin/add-property")}>
+//                 Add New Property
+//               </Button>
+//             ) : (
+//               <Button variant="outline" onClick={() => setSearchQuery("")}>
+//                 Clear Search
+//               </Button>
+//             )}
 //           </CardContent>
 //         </Card>
 //       ) : (
 //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//           {properties.map((property) => (
+//           {/* Note: Reading directly from the filtered array item list */}
+//           {filteredProperties.map((property) => (
 //             <Card key={property.id} className="hover:shadow-lg transition-shadow">
 //               {/* Property Image */}
 //               {propertyImages[property.id] && propertyImages[property.id].length > 0 && (
@@ -276,14 +326,19 @@
 //                     {getUsageTypeBadge(property.usage_type)}
 //                   </div>
 //                 </div>
-//                 <CardDescription className="flex items-center space-x-1">
+//                 {/* Display unique code on dashboard card if explicitly exists */}
+//                 {(property as any).property_code && (
+//                   <p className="text-xs font-mono text-indigo-600 tracking-wide mt-1">
+//                     Code: {(property as any).property_code}
+//                   </p>
+//                 )}
+//                 <CardDescription className="flex items-center space-x-1 mt-1">
 //                   <MapPin className="h-4 w-4" />
 //                   <span>{property.location || 'Location not specified'}</span>
 //                 </CardDescription>
 //               </CardHeader>
               
 //               <CardContent className="space-y-4">
-//                 {/* Property Details */}
 //                 <div className="grid grid-cols-2 gap-4 text-sm">
 //                   <div className="flex items-center space-x-2">
 //                     <Building2 className="h-4 w-4 text-gray-500" />
@@ -315,14 +370,12 @@
 //                   </div>
 //                 </div>
 
-//                 {/* Additional Info */}
 //                 {property.additional_info && (
 //                   <p className="text-sm text-gray-600 line-clamp-2">
 //                     {property.additional_info}
 //                   </p>
 //                 )}
 
-//                 {/* Action Buttons */}
 //                 <div className="flex space-x-2 pt-2">
 //                   <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate(`/admin/edit-property/${property.id}`)}>
 //                     <Eye className="h-4 w-4 mr-1" />
@@ -368,13 +421,15 @@
 //           ))}
 //         </div>
 //       )}
-
-     
 //     </AdminLayout>
 //   );
 // };
 
-// export default AllProperties; 
+// export default AllProperties;
+
+
+
+
 
 
 import { useEffect, useRef, useState } from "react";
@@ -510,6 +565,8 @@ const AllProperties = () => {
     }
   };
 
+
+  
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'Not specified';
     return new Date(dateString).toLocaleDateString('en-IN');
@@ -536,17 +593,65 @@ const AllProperties = () => {
   };
 
   // Filter properties based on the search input string
-  const filteredProperties = properties.filter((property) => {
+  // const filteredProperties = properties.filter((property) => {
+  //   const query = searchQuery.toLowerCase().trim();
+  //   if (!query) return true;
+
+  //   return (
+  //     property.building?.toLowerCase().includes(query) ||
+  //     property.property_type?.toLowerCase().includes(query) ||
+  //     property.usage_type?.toLowerCase().includes(query) ||
+  //     property.location?.toLowerCase().includes(query) ||
+  //     property.builder?.toLowerCase().includes(query) ||
+  //     (property as any).property_code?.toLowerCase().includes(query) // Adjust field if key matches exact database schema name
+  //   );
+  // });
+// Filter properties based on the search input string safely
+ // Filter properties based on the explicit TypeScript Property definition model
+  const filteredProperties = properties.filter((property: Property) => {
     const query = searchQuery.toLowerCase().trim();
     if (!query) return true;
 
+    // 1. Text Search Strings (Safely forced to lowercase text string types)
+    const buildingName = String(property?.building || "").toLowerCase();
+    const realPropertyName = String(property?.real_property_name || "").toLowerCase();
+    const builderName = String(property?.builder || "").toLowerCase();
+    const locationName = String(property?.location || "").toLowerCase();
+    const subLocation = String(property?.sub_location || "").toLowerCase();
+    const city = String(property?.city || "").toLowerCase();
+    const propertyCode = String(property?.property_code || "").toLowerCase();
+
+    // 2. Main Categories & Slugs (Luxury, New-Project, Plots-Lands, etc.)
+    const primaryCategory = String(property?.primary_category || "").toLowerCase();
+    
+    // Scan through multi-category assignment string arrays if they exist
+    const hasCategoryInAssignments = property?.category_assignments?.some(cat => 
+      String(cat || "").toLowerCase().includes(query)
+    ) || false;
+
+    // 3. UI Badge Types & Sub-Categories
+    const propertyType = String(property?.property_type || "").toLowerCase();         // New / Rental / Resale
+    const usageType = String(property?.usage_type || "").toLowerCase();               // Residential / Commercial
+    const usageTypeCategory = String(property?.usage_type_category || "").toLowerCase(); // Residential / Commercial
+    const commercialType = String(property?.commercial_type || "").toLowerCase();     // School, Hospital, Mall, etc.
+    const propertyTypeInternational = String(property?.property_type_international || "").toLowerCase();
+
+    // Return match configuration conditions
     return (
-      property.building?.toLowerCase().includes(query) ||
-      property.property_type?.toLowerCase().includes(query) ||
-      property.usage_type?.toLowerCase().includes(query) ||
-      property.location?.toLowerCase().includes(query) ||
-      property.builder?.toLowerCase().includes(query) ||
-      (property as any).property_code?.toLowerCase().includes(query) // Adjust field if key matches exact database schema name
+      buildingName.includes(query) ||
+      realPropertyName.includes(query) ||
+      builderName.includes(query) ||
+      locationName.includes(query) ||
+      subLocation.includes(query) ||
+      city.includes(query) ||
+      propertyCode.includes(query) ||
+      primaryCategory.includes(query) ||
+      hasCategoryInAssignments ||
+      propertyType.includes(query) ||
+      usageType.includes(query) ||
+      usageTypeCategory.includes(query) ||
+      commercialType.includes(query) ||
+      propertyTypeInternational.includes(query)
     );
   });
 

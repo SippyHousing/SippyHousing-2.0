@@ -63,68 +63,6 @@ const InvestorSection = () => {
           <div className="gold-divider"></div>
         </div>
         
-        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {investmentOpportunities.map(opportunity => (
-            <div key={opportunity.id} className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-100 h-full flex flex-col">
-              <div 
-                className="h-48 bg-cover bg-center"
-                style={{ backgroundImage: `url(${opportunity.image})` }}
-              >
-                <div className="p-3">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-white">
-                    {opportunity.type}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6 flex-grow flex flex-col">
-                <h3 className="text-xl font-bold mb-2 font-playfair">{opportunity.title}</h3>
-                <p className="text-sippy-charcoal/80 mb-2">{opportunity.location}</p>
-                
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div>
-                    <p className="text-sm text-sippy-charcoal/60">Investment</p>
-                    <div className="flex items-center">
-                      <IndianRupee className="h-4 w-4 text-sippy-gold mr-1" />
-                      <span className="font-semibold">{opportunity.price}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-sippy-charcoal/60">ROI</p>
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 text-sippy-gold mr-1" />
-                      <span className="font-semibold text-sippy-gold">{opportunity.roi}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <p className="text-sm text-sippy-charcoal/60 mb-2">Size</p>
-                  <div className="flex items-center">
-                    <Building className="h-4 w-4 text-sippy-gold mr-1" />
-                    <span>{opportunity.size}</span>
-                  </div>
-                </div>
-                
-                <div className="mb-6">
-                  <p className="text-sm text-sippy-charcoal/60 mb-2">Highlights</p>
-                  <ul className="space-y-1">
-                    {opportunity.highlights.map((highlight, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="bg-sippy-beige text-sippy-gold rounded-full p-1 mr-2 text-xs">•</span>
-                        <span className="text-sm">{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <button className="btn-outline mt-auto w-full">
-                  Request Investor Package
-                </button>
-              </div>
-            </div>
-          ))}
-        </div> */}
-        
         <div className="bg-sippy-beige p-8 md:p-12 rounded-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
