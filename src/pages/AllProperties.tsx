@@ -429,10 +429,7 @@
 
 
 
-
-
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -592,68 +589,90 @@ const AllProperties = () => {
     }
   };
 
-  // Filter properties based on the search input string
-  // const filteredProperties = properties.filter((property) => {
-  //   const query = searchQuery.toLowerCase().trim();
-  //   if (!query) return true;
+  // Filter properties by name, category/BHK, price, and area/sqft — same
+  // multi-field logic as the public search page, so "2BHK Andheri under 1 crore"
+  // style queries work here too, just run client-side against loaded properties.
+  const filteredProperties = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return properties;
 
-  //   return (
-  //     property.building?.toLowerCase().includes(query) ||
-  //     property.property_type?.toLowerCase().includes(query) ||
-  //     property.usage_type?.toLowerCase().includes(query) ||
-  //     property.location?.toLowerCase().includes(query) ||
-  //     property.builder?.toLowerCase().includes(query) ||
-  //     (property as any).property_code?.toLowerCase().includes(query) // Adjust field if key matches exact database schema name
-  //   );
-  // });
-// Filter properties based on the search input string safely
- // Filter properties based on the explicit TypeScript Property definition model
-  const filteredProperties = properties.filter((property: Property) => {
-    const query = searchQuery.toLowerCase().trim();
-    if (!query) return true;
+    return properties.filter((property: Property) => {
+      const p = property as any; // some fields (property_code, builder, etc.) aren't on every Property typing
 
-    // 1. Text Search Strings (Safely forced to lowercase text string types)
-    const buildingName = String(property?.building || "").toLowerCase();
-    const realPropertyName = String(property?.real_property_name || "").toLowerCase();
-    const builderName = String(property?.builder || "").toLowerCase();
-    const locationName = String(property?.location || "").toLowerCase();
-    const subLocation = String(property?.sub_location || "").toLowerCase();
-    const city = String(property?.city || "").toLowerCase();
-    const propertyCode = String(property?.property_code || "").toLowerCase();
+      // Every text/number field worth matching against, normalized to lowercase.
+      const fields: string[] = [
+        p?.building,
+        p?.real_property_name,
+        p?.builder,
+        p?.location,
+        p?.sub_location,
+        p?.city,
+        p?.property_code,
+        p?.primary_category,
+        p?.property_type,
+        p?.usage_type,
+        p?.usage_type_category,
+        p?.commercial_type,
+        p?.property_type_international,
+        p?.configuration_type,
+        p?.configuration_international,
+        p?.additional_info,
+        p?.bhk,
+        p?.flat_size,
+        p?.area,
+        p?.plot_size,
+        p?.constructed_area,
+        p?.built_up_area,
+        p?.property_size,
+        p?.price,
+        p?.price_range,
+        p?.sale_price,
+        p?.price_international,
+      ]
+        .filter(Boolean)
+        .map((v) => String(v).toLowerCase());
 
-    // 2. Main Categories & Slugs (Luxury, New-Project, Plots-Lands, etc.)
-    const primaryCategory = String(property?.primary_category || "").toLowerCase();
-    
-    // Scan through multi-category assignment string arrays if they exist
-    const hasCategoryInAssignments = property?.category_assignments?.some(cat => 
-      String(cat || "").toLowerCase().includes(query)
-    ) || false;
+      if (Array.isArray(p?.category_assignments)) {
+        fields.push(...p.category_assignments.map((c: string) => String(c || "").toLowerCase()));
+      }
 
-    // 3. UI Badge Types & Sub-Categories
-    const propertyType = String(property?.property_type || "").toLowerCase();         // New / Rental / Resale
-    const usageType = String(property?.usage_type || "").toLowerCase();               // Residential / Commercial
-    const usageTypeCategory = String(property?.usage_type_category || "").toLowerCase(); // Residential / Commercial
-    const commercialType = String(property?.commercial_type || "").toLowerCase();     // School, Hospital, Mall, etc.
-    const propertyTypeInternational = String(property?.property_type_international || "").toLowerCase();
+      // Also index a "no spaces" variant of the BHK-ish fields so "2BHK" matches
+      // a stored "2 BHK" and vice versa.
+      const bhkLike = [p?.bhk, p?.configuration_type, p?.configuration_international]
+        .filter(Boolean)
+        .map((v) => String(v).toLowerCase().replace(/\s+/g, ""));
+      fields.push(...bhkLike);
 
-    // Return match configuration conditions
-    return (
-      buildingName.includes(query) ||
-      realPropertyName.includes(query) ||
-      builderName.includes(query) ||
-      locationName.includes(query) ||
-      subLocation.includes(query) ||
-      city.includes(query) ||
-      propertyCode.includes(query) ||
-      primaryCategory.includes(query) ||
-      hasCategoryInAssignments ||
-      propertyType.includes(query) ||
-      usageType.includes(query) ||
-      usageTypeCategory.includes(query) ||
-      commercialType.includes(query) ||
-      propertyTypeInternational.includes(query)
-    );
-  });
+      const haystack = fields.join(" | ");
+
+      // Pull "N BHK" / "NBHK" / "N RK" tokens out first so both spacing
+      // variants get checked against the same haystack.
+      let remaining = q;
+      const bhkRegex = /(\d+)\s*-?\s*(bhk|rk)/gi;
+      const bhkChecks: boolean[] = [];
+      let match: RegExpExecArray | null;
+      while ((match = bhkRegex.exec(q)) !== null) {
+        const num = match[1];
+        const unit = match[2];
+        bhkChecks.push(
+          haystack.includes(`${num} ${unit}`) || haystack.includes(`${num}${unit}`)
+        );
+        remaining = remaining.replace(match[0], " ");
+      }
+
+      const wordTokens = remaining
+        .split(/[\s,]+/)
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0);
+
+      const wordChecks = wordTokens.map((token) => haystack.includes(token));
+
+      // Every extracted requirement (BHK combos + remaining words) must match
+      // somewhere — this is what lets combined queries like
+      // "2BHK Andheri penthouse" narrow down instead of matching nothing.
+      return [...bhkChecks, ...wordChecks].every(Boolean);
+    });
+  }, [properties, searchQuery]);
 
   if (loading) {
     return (
