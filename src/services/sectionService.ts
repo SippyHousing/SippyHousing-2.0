@@ -16,8 +16,6 @@ export const sectionService = {
       .select("*")
       .eq("is_active", true)
       .order("sort_order", { ascending: true });
-       console.log("data-11", data);
-        console.log("error-12", error);
     if (error) throw error;
     return data;
   },
