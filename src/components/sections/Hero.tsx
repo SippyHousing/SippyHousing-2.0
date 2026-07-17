@@ -38,7 +38,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-6xl w-full animate-fade-in">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white font-playfair leading-tight mb-6">
-          Your key to <span className="text-sippy-gold">Happiness</span>
+          Your Key to <span className="text-sippy-gold">Happiness</span>
         </h1>
         <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
         Mumbai’s premier real estate partner for luxury residences, redevelopment and joint ventures, premium plots and large land parcels, independent buildings, hotels, high-value investments, and exclusive properties.
